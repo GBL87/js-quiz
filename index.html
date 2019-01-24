@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h1>Quiz</h1>
+    <p id="question"></p>
+    <input type="text" id="answer"><br>
+    <button id="checkButton" onclick="checkAnswer()">Check Answer</button>
+
+    <script>
+        // parameters
+        var questions = ["Question 1", "Question 2", "Question 3"];
+        var answers = ["Answer 1", "Answer 2", "Answer 3"];
+        var questionCounter = 0;
+        var errorCounter = 1;
+
+        //elements
+        var questionElement = document.getElementById("question");
+        var answerElement = document.getElementById("answer");
+        var buttonElement = document.getElementById("checkButton");
+
+        //init
+        questionElement.innerHTML = questions[questionCounter]
+
+        // Check answers
+        function checkAnswer() {
+            let answer = answerElement.value;
+
+            if (answer === answers[questionCounter]) {
+                nextQuestion();
+
+            } else {
+                if (errorCounter < 3) {
+                    incrementErrorCounter();
+                } else {
+                    endGame();
+                }
+            }
+
+            if (questionCounter === questions.length) {
+                endGame();
+            }
+        }
+
+        function nextQuestion() {
+            incrementQuestionCounter();
+            questionElement.innerHTML = questions[questionCounter];
+        }
+
+        function incrementQuestionCounter() {
+            questionCounter += 1;
+        }
+
+        function incrementErrorCounter() {
+            errorCounter += 1;
+        }
+
+        function resetCounters() {
+            // questionCounter = -1, because the reinitialization of the quiz starts at 0,
+            // whereafter a +1 (incrementQuestionCounter) will be executed (nextQuestion) in the resetQuiz-function
+            questionCounter = -1;
+            errorCounter = 1;
+        }
+
+        function endGame() {
+            //buttonElement.disabled = true;
+            errorCounter -= 1;
+            questionElement.innerHTML = "Quiz is afgelopen! Je hebt " + errorCounter + " fout(en) gemaakt."
+            buttonElement.innerHTML = "Reset Quiz"
+            buttonElement.setAttribute("onclick", "resetQuiz()")
+        }
+
+        function resetQuiz() {
+            alert("Quiz wordt opnieuw gestart!")
+            resetCounters()
+            buttonElement.innerHTML = "Check Answer"
+            buttonElement.setAttribute("onclick", "checkAnswer()")
+            nextQuestion();
+        }
+    </script>
+
+</body>
+
+</html>
